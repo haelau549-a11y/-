@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>您的文案已生成</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            max-width: 800px;
+            margin: 60px auto;
+            padding: 0 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+        h1 {
+            color: #222;
+            margin-bottom: 30px;
+        }
+        .result-card {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+        .label {
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 4px;
+        }
+        .value {
+            font-size: 18px;
+            color: #222;
+            margin-bottom: 16px;
+        }
+        #copyBtn {
+            background: #007aff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #copyBtn:hover {
+            background: #0066cc;
+        }
+    </style>
+</head>
+<body>
+    <h1>您的团购文案已生成 ✨</h1>
+
+    <div class="result-card">
+        <div class="label">商家名称</div>
+        <div class="value" id="shopName"></div>
+
+        <div class="label">项目名称</div>
+        <div class="value" id="projectName"></div>
+
+        <div class="label">原价 / 现价</div>
+        <div class="value" id="price"></div>
+
+        <div class="label">生成的文案</div>
+        <div class="value" id="generatedCopy" style="white-space: pre-line;"></div>
+    </div>
+
+    <button id="copyBtn">一键复制文案</button>
+
+    <script>
+        // 从 URL 中读取参数
+        const params = new URLSearchParams(window.location.search);
+
+        // 填充到页面
+        document.getElementById('shopName').textContent = params.get('shopName') || '-';
+        document.getElementById('projectName').textContent = params.get('projectName') || '-';
+        document.getElementById('price').textContent = 
+            `${params.get('originalPrice') || '-'} / ${params.get('currentPrice') || '-'}`;
+        document.getElementById('generatedCopy').textContent = params.get('generatedCopy') || '暂无文案';
+
+        // 一键复制功能
+        document.getElementById('copyBtn').addEventListener('click', function() {
+            const text = document.getElementById('generatedCopy').textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('文案已复制到剪贴板！');
+            });
+        });
+    </script>
+</body>
+</html>
