@@ -67,40 +67,19 @@
     <button id="copyBtn">一键复制文案</button>
 
     <script>
-// 从 URL 中读取参数
+// 从 URL 中读取所有参数
 const params = new URLSearchParams(window.location.search);
 const shopName = params.get('shopName') || '-';
 const itemName = params.get('itemName') || '-';
 const originalPrice = params.get('originalPrice') || '-';
 const currentPrice = params.get('currentPrice') || '-';
+const generatedCopy = params.get('generatedCopy') || '暂无文案';
 
-// 先填充已知的信息（商家、项目、价格）
+// 填充到页面
 document.getElementById('shopName').textContent = shopName;
 document.getElementById('itemName').textContent = itemName;
 document.getElementById('price').textContent = `${originalPrice} / ${currentPrice}`;
-
-// 主动请求集简云获取生成的文案
-fetch('https://hook.jijyun.cn/v1/accept/data/webhook_accept_first/67ZP9aS5zxYsr1KQ2EgUpVfj8yXNleHi', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    fields: [
-      { value: shopName },
-      { value: itemName },
-      { value: originalPrice },
-      { value: currentPrice }
-    ]
-  })
-})
-.then(res => res.json())
-.then(data => {
-  // 把集简云返回的文案填充到页面
-  document.getElementById('generatedCopy').textContent = data.generatedCopy || '暂无文案';
-})
-.catch(err => {
-  console.error('获取文案失败：', err);
-  document.getElementById('generatedCopy').textContent = '文案生成中，请稍等刷新页面';
-});
+document.getElementById('generatedCopy').textContent = generatedCopy;
 
 // 一键复制功能
 document.getElementById('copyBtn').addEventListener('click', function() {
@@ -112,6 +91,3 @@ document.getElementById('copyBtn').addEventListener('click', function() {
         console.error('复制失败：', err);
     });
 });
-    </script>
-</body>
-</html>
